@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natdanai Winthachai - Full-Stack Developer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: #1a1a1a;
+            --accent-primary: #00ff88;
+            --accent-secondary: #00d4ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border: #2a2a2a;
+            --shadow: rgba(0, 255, 136, 0.1);
+            --glow: rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .hero-text .description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .code-editor {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .editor-header {
+            background: var(--secondary-bg);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .editor-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+        }
+
+        .editor-dot:nth-child(2) { background: #ffbd2e; }
+        .editor-dot:nth-child(3) { background: #27ca3f; }
+
+        .editor-title {
+            margin-left: 15px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .editor-content {
+            padding: 25px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-line {
+            margin-bottom: 5px;
+        }
+
+        .keyword { color: #c792ea; }
+        .string { color: #c3e88d; }
+        .function { color: #82aaff; }
+        .comment { color: #546e7a; }
+        .number { color: #f78c6c; }
+
+        .typing-cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: var(--primary-bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 30px var(--shadow);
+            transform: translateY(-5px);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
+        }
+
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .skill-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--accent-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent-primary);
+            color: var(--primary-bg);
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .timeline-date {
+            background: var(--accent-primary);
+            color: var(--primary-bg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .timeline-company {
+            color: var(--accent-secondary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-primary);
+            border: 4px solid var(--primary-bg);
+            border-radius: 50%;
+            top: 30px;
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -10px;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-primary);
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .terminal {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-header {
+            background: var(--secondary-bg);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .terminal-content {
+            padding: 25px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .terminal-line {
+            margin-bottom: 10px;
+        }
+
+        .prompt { color: var(--accent-primary); }
+        .output { color: var(--text-secondary); }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-bg);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .footer-content {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-text h1 { font-size: 2.5rem; }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .timeline::before { left: 20px; }
+            
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                text-align: left;
+                padding-left: 50px;
+            }
+
+            .timeline-item::before {
+                left: 10px !important;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .section-title { font-size: 2rem; }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            25% { clip: rect(12px, 9999px, 15px, 0); }
+            50% { clip: rect(85px, 9999px, 90px, 0); }
+            75% { clip: rect(63px, 9999px, 66px, 0); }
+            100% { clip: rect(21px, 9999px, 25px, 0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip: rect(65px, 9999px, 70px, 0); }
+            25% { clip: rect(32px, 9999px, 35px, 0); }
+            50% { clip: rect(18px, 9999px, 22px, 0); }
+            75% { clip: rect(95px, 9999px, 98px, 0); }
+            100% { clip: rect(8px, 9999px, 12px, 0); }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="#" class="logo">&lt;NW /&gt;</a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="glitch" data-text="Natdanai Winthachai">Natdanai Winthachai</h1>
+                    <p class="subtitle">Full-Stack Developer</p>
+                    <p class="description">
+                        Crafting robust web applications with modern technologies. 
+                        Specialized in ASP.NET, C#, and full-stack development with 
+                        a passion for clean code and innovative solutions.
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">2+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Technologies</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Dedication</div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="#contact" class="btn btn-primary">
+                            <span>Get In Touch</span>
+                            <span>→</span>
+                        </a>
+                        <a href="#experience" class="btn btn-secondary">
+                            <span>View Work</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dot"></div>
+                            <div class="editor-dot"></div>
+                            <div class="editor-dot"></div>
+                            <div class="editor-title">Portfolio.cs</div>
+                        </div>
+                        <div class="editor-content">
+                            <div class="code-line">
+                                <span class="keyword">using</span> <span class="string">System</span>;
+                            </div>
+                            <div class="code-line">
+                                <span class="keyword">using</span> <span class="string">System.Web.Mvc</span>;
+                            </div>
+                            <div class="code-line"><br></div>
+                            <div class="code-line">
+                                <span class="keyword">public class</span> <span class="function">Developer</span>
+                            </div>
+                            <div class="code-line">{</div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;<span class="keyword">public string</span> Name = <span class="string">"Natdanai"</span>;
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;<span class="keyword">public string[]</span> Skills = {
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"C#"</span>, <span class="string">"ASP.NET"</span>, <span class="string">"JavaScript"</span>,
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"SQL Server"</span>, <span class="string">"Flutter"</span>
+                            </div>
+                            <div class="code-line">&nbsp;&nbsp;};</div>
+                            <div class="code-line"><br></div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;<span class="keyword">public void</span> <span class="function">Code</span>()
+                            </div>
+                            <div class="code-line">&nbsp;&nbsp;{</div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Building amazing things...</span><span class="typing-cursor">|</span>
+                            </div>
+                            <div class="code-line">&nbsp;&nbsp;}</div>
+                            <div class="code-line">}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Technical Arsenal</h2>
+                <p class="section-subtitle">
+                    Modern technologies and frameworks I work with to build exceptional digital experiences
+                </p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">⚡</div>
+                    <h3 class="skill-title">Frontend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Bootstrap</span>
+                        <span class="skill-tag">React.js</span>
+                        <span class="skill-tag">Responsive</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">🛠️</div>
+                    <h3 class="skill-title">Backend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">ASP.NET</span>
+                        <span class="skill-tag">MVC</span>
+                        <span class="skill-tag">Web Forms</span>
+                        <span class="skill-tag">RESTful API</span>
+                        <span class="skill-tag">PHP</span>
+                        <span class="skill-tag">Laravel</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">💾</div>
+                    <h3 class="skill-title">Database & Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">SQL Server</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">Stored Procedures</span>
+                        <span class="skill-tag">Visual Studio</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Postman</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <h3 class="skill-title">Mobile & UI/UX</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Flutter</span>
+                        <span class="skill-tag">Dart</span>
+                        <span class="skill-tag">Figma</span>
+                        <span class="skill-tag">Mobile-First</span>
+                        <span class="skill-tag">Cross-Platform</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Professional Journey</h2>
+                <p class="section-subtitle">
+                    Building experience through diverse projects and challenging roles
+                </p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 - Present</div>
+                        <h3 class="timeline-title">Full-Stack Web Developer</h3>
+                        <p class="timeline-company">Double A (1991) Public Co., Ltd.</p>
+                        <p class="timeline-desc">
+                            Developing enterprise-grade web applications using ASP.NET and C#. 
+                            Designed optimized database structures, created responsive UI/UX, 
+                            and successfully deployed applications to production environments.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Dec 2022 - Mar 2023</div>
+                        <h3 class="timeline-title">Web Developer Intern</h3>
+                        <p class="timeline-company">FPT Software, Da Nang, Vietnam</p>
+                        <p class="timeline-desc">
+                            Participated in debugging and web application development. 
+                            Collaborated with international teams to enhance existing web applications 
+                            and gained valuable cross-cultural development experience.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">May 2022 - Jun 2022</div>
+                        <h3 class="timeline-title">IT Support & Web Developer Intern</h3>
+                        <p class="timeline-company">NT Service, Khon Kaen Government Center</p>
+                        <p class="timeline-desc">
+                            Assisted in system planning and web application development for government services. 
+                            Gained experience in IT support, system documentation, and public sector technology requirements.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2019 - 2023</div>
+                        <h3 class="timeline-title">Bachelor's Degree</h3>
+                        <p class="timeline-company">Khon Kaen University</p>
+                        <p class="timeline-desc">
+                            Bachelor of Science in Computer Information Science. 
+                            Built strong foundation in programming, database design, 
+                            system analysis, and software development methodologies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle">
+                    Ready to collaborate on your next project or discuss opportunities
+                </p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <a href="tel:+66982221587" class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+66 98-222-1587</p>
+                        </div>
+                    </a>
+
+                    <a href="mailto:ndni.tae@gmail.com" class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>ndni.tae@gmail.com</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Bangkok, Thailand</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">🌐</div>
+                        <div>
+                            <h4>Portfolio</h4>
+                            <p>LinkedIn / GitHub</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="editor-dot"></div>
+                        <div class="editor-dot"></div>
+                        <div class="editor-dot"></div>
+                        <span style="margin-left: 15px; color: var(--text-secondary); font-size: 14px;">terminal</span>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="terminal-line">
+                            <span class="prompt">natdanai@portfolio:~$</span> <span class="output">whoami</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Full-Stack Developer</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Location: Bangkok, Thailand</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Experience: 2+ years</span>
+                        </div>
+                        <div class="terminal-line"><br></div>
+                        <div class="terminal-line">
+                            <span class="prompt">natdanai@portfolio:~$</span> <span class="output">cat skills.txt</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Languages: C#, JavaScript, PHP, Dart</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Frameworks: ASP.NET, Laravel, Flutter</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Databases: SQL Server, MySQL</span>
+                        </div>
+                        <div class="terminal-line"><br></div>
+                        <div class="terminal-line">
+                            <span class="prompt">natdanai@portfolio:~$</span> <span class="output">ls certifications/</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">google-flutter-training.cert</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">salesforce-system.cert</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">aspnet-development.cert</span>
+                        </div>
+                        <div class="terminal-line"><br></div>
+                        <div class="terminal-line">
+                            <span class="prompt">natdanai@portfolio:~$</span> <span class="output">echo "Ready for new challenges!"</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Ready for new challenges!</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">natdanai@portfolio:~$</span> <span class="typing-cursor">|</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Natdanai Winthachai. Built with passion and modern web technologies.</p>
+                <p style="margin-top: 10px; color: var(--text-muted);">
+                    &lt;/&gt; with ❤️ in Bangkok, Thailand
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+        const matrixArray = matrix.split("");
+
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff88';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        // Resize canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.8s ease';
+            observer.observe(section);
+        });
+
+        // Typing effect for code editor
+        const codeLines = document.querySelectorAll('.code-line');
+        let currentLine = 0;
+
+        function typeCode() {
+            if (currentLine < codeLines.length) {
+                codeLines[currentLine].style.opacity = '1';
+                codeLines[currentLine].style.animation = 'fadeInUp 0.5s ease forwards';
+                currentLine++;
+                setTimeout(typeCode, 200);
+            }
+        }
+
+        // Start typing animation after page load
+        window.addEventListener('load', () => {
+            setTimeout(typeCode, 1000);
+        });
+
+        // Skill card hover effects
+        document.querySelectorAll('.skill-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Terminal typing effect
+        const terminalLines = document.querySelectorAll('.terminal-line');
+        
+        function showTerminalLines() {
+            terminalLines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.style.opacity = '1';
+                    line.style.animation = 'fadeInUp 0.3s ease forwards';
+                }, index * 150);
+            });
+        }
+
+        // Trigger terminal animation when in view
+        const terminalObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    showTerminalLines();
+                    terminalObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const terminal = document.querySelector('.terminal');
+        if (terminal) {
+            // Hide terminal lines initially
+            terminalLines.forEach(line => {
+                line.style.opacity = '0';
+            });
+            terminalObserver.observe(terminal);
+        }
+
+        // Add glitch effect on hover
+        const glitchElement = document.querySelector('.glitch');
+        let glitchInterval;
+
+        glitchElement.addEventListener('mouseenter', () => {
+            glitchInterval = setInterval(() => {
+                glitchElement.style.textShadow = `
+                    ${Math.random() * 10 - 5}px 0 #ff0000,
+                    ${Math.random() * 10 - 5}px 0 #00ffff
+                `;
+            }, 50);
+        });
+
+        glitchElement.addEventListener('mouseleave', () => {
+            clearInterval(glitchInterval);
+            glitchElement.style.textShadow = 'none';
+        });
+
+        // Particle effect on skill tags
+        document.querySelectorAll('.skill-tag').forEach(tag => {
+            tag.addEventListener('click', function(e) {
+                // Create particle explosion effect
+                for(let i = 0; i < 6; i++) {
+                    const particle = document.createElement('div');
+                    particle.style.cssText = `
+                        position: absolute;
+                        width: 4px;
+                        height: 4px;
+                        background: var(--accent-primary);
+                        pointer-events: none;
+                        border-radius: 50%;
+                    `;
+                    
+                    this.appendChild(particle);
+                    
+                    const angle = (Math.PI * 2 * i) / 6;
+                    const velocity = 50 + Math.random() * 30;
+                    
+                    particle.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { 
+                            transform: `translate(${Math.cos(angle) * velocity}px, ${Math.sin(angle) * velocity}px) scale(0)`, 
+                            opacity: 0 
+                        }
+                    ], {
+                        duration: 800,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    }).onfinish = () => particle.remove();
+                }
+            });
+        });
+
+        // Add floating animation to hero visual
+        const heroVisual = document.querySelector('.hero-visual');
+        if (heroVisual) {
+            setInterval(() => {
+                heroVisual.style.transform = `translateY(${Math.sin(Date.now() * 0.001) * 10}px)`;
+            }, 16);
+        }
+    </script>
+</body>
+</html>
